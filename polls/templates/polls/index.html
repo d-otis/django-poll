@@ -11,7 +11,10 @@
 
     Here with 'url' we're saying: look @ the urls.py paths and find the one
     we named 'detail'; take that url scheme and replace <int:question_id> 
-    with the question.id of the question element
+    with the question.id of the question element.
+
+    The 'polls' part of 'polls:detail' tells Django to refer to the app_name
+    of 'polls' which is specified in polls.urls.py aka NAMESPACING
     {% endcomment %}
       <a href="{% url 'detail' question.id %}">{{ question.question_text }}</a>
     </li>
