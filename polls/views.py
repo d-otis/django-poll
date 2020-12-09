@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.template import loader
 
@@ -26,10 +26,15 @@ def detail(request, question_id):
   # OG Stub
   # return HttpResponse("You're looking @ question %s." % question_id)
   # ###############################
-  try:
-    question = Question.objects.get(pk=question_id)
-  except Question.DoesNotExist:
-    raise Http404("Question does not exist")
+  # VERBOSE TRY/EXCEPT for querying DB
+  # try:
+  #   question = Question.objects.get(pk=question_id)
+  # except Question.DoesNotExist:
+  #   raise Http404("Question does not exist")
+  # return render(request, 'polls/detail.html', {'question': question})
+  # ###############################
+  # REFACTORED to auto raise 404 exception when needed
+  question = get_object_or_404(Question, pk=question_id)
   return render(request, 'polls/detail.html', {'question': question})
 
 def results(request, question_id):
