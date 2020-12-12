@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views import generic
 
 # originally needed this in the OG index()
 # from django.template import loader
@@ -8,7 +9,7 @@ from django.urls import reverse
 from .models import Choice, Question
 # Create your views here.
 
-def index(request):
+def IndexView(generic.ListView):
   # original example
   # return HttpResponse("Hello, world. You're @ the polls index!")
   # ORIGINAL w/ Template
@@ -20,12 +21,20 @@ def index(request):
   # return HttpResponse(template.render(context, request))
   # REWRITTEN 
   # since this is such a common pattern
-  latest_question_list = Question.objects.order_by('-pub_date')[:5]
-  context = {'latest_question_list': latest_question_list}
-  return render(request, 'polls/index.html', context)
+  # latest_question_list = Question.objects.order_by('-pub_date')[:5]
+  # context = {'latest_question_list': latest_question_list}
+  # return render(request, 'polls/index.html', context)
+  # #############################
+  # REFACTORED FOR GENERIC VIEWS
+  template_name = 'polls/index.html'
+  context_object_name = 'latest_question_list'
+
+  def get_queryset(self):
+    """ Return the last five published questions. """
+    return Question.objects.order_by('-pub_date')[:5]
 
 
-def detail(request, question_id):
+def detail(generic.DetailView):
   # OG Stub
   # return HttpResponse("You're looking @ question %s." % question_id)
   # ###############################
@@ -37,12 +46,20 @@ def detail(request, question_id):
   # return render(request, 'polls/detail.html', {'question': question})
   # ###############################
   # REFACTORED to auto raise 404 exception when needed
-  question = get_object_or_404(Question, pk=question_id)
-  return render(request, 'polls/detail.html', {'question': question})
+  # question = get_object_or_404(Question, pk=question_id)
+  # return render(request, 'polls/detail.html', {'question': question})
+  #   # ###############################
+  # REFACTORED FOR GENERIC VIEWS
+  model = Question
+  template_name = 'polls/detail.html'
 
-def results(request, question_id):
-  question = get_object_or_404(Question, pk=question_id)
-  return render(request, 'polls/results.html', {'question': question})
+def results(generic.DetailView):
+  # question = get_object_or_404(Question, pk=question_id)
+  # return render(request, 'polls/results.html', {'question': question})
+  #   # ###############################
+  # REFACTORED FOR GENERIC VIEWS
+  model = Question
+  template_name = 'polls/results.html'
 
 def vote(request, question_id):
   # OG Stub-out
