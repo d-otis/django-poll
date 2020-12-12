@@ -63,3 +63,10 @@ def vote(request, question_id):
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+    
+    # reverse() is similar to url template tag in .html files
+    # that's why referencing the polls/results route looks like:
+    # 'polls:results' -- if we just had one app, the polls one:
+    # we could just use 'results' as the first argument
+    # the args is the pk that the path('<int:question_id/results/') needs to
+    # query the results
