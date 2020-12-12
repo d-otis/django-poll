@@ -9,6 +9,19 @@ from django.views import generic
 from .models import Choice, Question
 # Create your views here.
 
+# Notes regarding refactoring with Generic Views:
+""" In previous parts of the tutorial, the templates have been provided 
+with a context that contains the question and latest_question_list 
+context variables. For DetailView the question variable is provided 
+automatically – since we’re using a Django model (Question), Django 
+is able to determine an appropriate name for the context variable. 
+However, for ListView, the automatically generated context variable is 
+question_list. To override this we provide the context_object_name 
+attribute, specifying that we want to use latest_question_list instead. 
+As an alternative approach, you could change your templates to match 
+the new default context variables – but it’s a lot easier to tell 
+Django to use the variable you want. """
+
 class IndexView(generic.ListView):
   # original example
   # return HttpResponse("Hello, world. You're @ the polls index!")
